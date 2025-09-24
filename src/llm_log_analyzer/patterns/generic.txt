@@ -1,0 +1,15 @@
+# Generic error patterns for log analysis
+# One pattern per line, lines starting with # are comments
+
+Exception:
+ERROR:
+FATAL:
+CRITICAL:
+Build failed
+Compilation error
+Link error
+Test failed
+Process exited with code
+Segmentation fault
+Access violation
+Stack overflow

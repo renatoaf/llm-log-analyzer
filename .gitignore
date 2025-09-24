@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.DS_Store
+samples/
+analysis.json
+analysis.md
+filtered_log.txt
+chunk_prompt_*.txt
+aggregation_prompt.txt
+chunk_response_*.txt
+aggregation_response.txt
+logs/
+output/
+build/
+*.egg-info/
+.vscode/
+dist

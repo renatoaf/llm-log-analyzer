@@ -1,0 +1,12 @@
+# Unity-specific error patterns
+# One pattern per line, lines starting with # are comments
+
+CompilerError:
+BuildFailedException:
+UnityException:
+IL2CPP error
+Xcode build failed
+Gradle build failed
+[Package Manager] Error
+Asset import failed
+Compilation failed
