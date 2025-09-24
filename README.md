@@ -22,6 +22,7 @@ Feel free to contribute with new presets or refinements.
 
 ```bash
 pip install git+https://github.com/renatoaf/llm-log-analyzer
+# or pip3 install git+ssh://git@github.com/renatoaf/llm-log-analyzer
 ```
 
 ### Cloning the repo
