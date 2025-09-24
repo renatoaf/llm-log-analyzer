@@ -1,4 +1,4 @@
-# Log Analyzer
+# LLM Log Analyzer
 
 A log analyzer for CI/CD pipelines (Jenkins, GitLab CI, GitHub Actions) that leverages Large Language Models to automatically detect and explain the root cause of failures, suggesting possible fixes.
 
@@ -40,7 +40,7 @@ pip install -r requirements.txt
 
 ## Setup
 
-1. Set up API keys for your preferred LLM provider:
+Set up API keys for your preferred LLM provider:
 
 **For Gemini:**
 ```bash
