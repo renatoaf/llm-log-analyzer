@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "llm-log-analyzer"
+version = "1.0.0"
+description = "AI-powered log analyzer for CI environments using LLMs"
+readme = "README.md"
+license = "MIT"
+authors = [
+    {name = "Renato Freitas", email = "renatoaf.dev@gmail.com"}
+]
+maintainers = [
+    {name = "Renato Freitas", email = "renatoaf.dev@gmail.com"}
+]
+keywords = ["unity", "build", "log", "analyzer", "ci", "automation", "ai", "llm", "root-cause-analysis"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: Debuggers",
+    "Topic :: System :: Logging",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "anthropic>=0.34.0",
+    "google-generativeai>=0.3.0",
+    "openai>=1.0.0",
+    "boto3>=1.28.0",
+    "click>=8.1.0",
+    "requests>=2.31.0",
+    "tiktoken>=0.5.0",
+    "langchain-text-splitters>=0.2.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/renatoaf/llm-log-analyzer"
+Repository = "https://github.com/renatoaf/llm-log-analyzer"
+Issues = "https://github.com/renatoaf/llm-log-analyzer/issues"
+Documentation = "https://github.com/renatoaf/llm-log-analyzer#readme"
+
+[project.scripts]
+llm-log-analyzer = "llm_log_analyzer.analyze_log:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+llm_log_analyzer = [
+    "prompts/*.txt",
+    "patterns/*.txt",
+]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["__pycache__", "*.pyc", "*.pyo"]

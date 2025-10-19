@@ -1,5 +1,9 @@
 # LLM Log Analyzer
 
+[![PyPI version](https://badge.fury.io/py/llm-log-analyzer.svg)](https://badge.fury.io/py/llm-log-analyzer)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A log analyzer for CI/CD pipelines (Jenkins, GitLab CI, GitHub Actions) that leverages Large Language Models to automatically detect and explain the root cause of failures, suggesting possible fixes.
 
 This project originated from the difficulty of diagnosing issues in Unity build logs, which are notoriously verbose and hard to navigate — especially for less experienced developers. While optimized for Unity by default, the analyzer is fully configurable and can be adapted to any kind of build or runtime logs.
@@ -18,7 +22,13 @@ Feel free to contribute with new presets or refinements.
 
 ## Installation
 
-### Using pip
+### Using pip (Recommended)
+
+```bash
+pip install llm-log-analyzer
+```
+
+### From GitHub (Development)
 
 ```bash
 pip install git+https://github.com/renatoaf/llm-log-analyzer
