@@ -55,9 +55,3 @@ git push origin "$TAG"
 
 echo "✨ Release $VERSION initiated!"
 echo "🔗 Monitor the GitHub Actions at: https://github.com/renatoaf/llm-log-analyzer/actions"
-
-if [ "$TEST_MODE" = "--test" ]; then
-    echo "📦 Package will be published to TestPyPI: https://test.pypi.org/project/llm-log-analyzer/"
-else
-    echo "📦 Package will be published to PyPI: https://pypi.org/project/llm-log-analyzer/"
-fi
