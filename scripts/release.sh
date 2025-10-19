@@ -8,12 +8,12 @@
 set -e
 
 VERSION=$1
-TEST_MODE=$2
+
+TAG="$VERSION"
 
 if [ -z "$VERSION" ]; then
-    echo "Usage: $0 <version> [--test]"
+    echo "Usage: $0 <version>"
     echo "Example: $0 1.0.1"
-    echo "Example: $0 1.0.0-beta1 --test"
     exit 1
 fi
 
@@ -38,14 +38,6 @@ python -m build
 
 echo "✅ Checking package..."
 twine check dist/*
-
-if [ "$TEST_MODE" = "--test" ]; then
-    echo "🧪 Test mode: Creating pre-release tag..."
-    TAG="v$VERSION"
-else
-    echo "🏷️  Creating release tag..."
-    TAG="v$VERSION"
-fi
 
 # Create and push tag
 echo "📤 Creating and pushing tag $TAG..."
