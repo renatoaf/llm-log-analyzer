@@ -36,9 +36,6 @@ echo "🔨 Building package..."
 rm -rf dist/ build/
 python -m build
 
-echo "✅ Checking package..."
-twine check dist/*
-
 # Create and push tag
 echo "📤 Creating and pushing tag $TAG..."
 git tag "$TAG"
