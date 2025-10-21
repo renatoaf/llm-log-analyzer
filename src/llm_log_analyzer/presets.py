@@ -31,6 +31,21 @@ PRESETS: Dict[str, Dict[str, Any]] = {
         "patterns_file": "patterns/unity.txt", 
         "prompt_file": "prompts/unity.txt",
         "description": "Unity game engine build logs analysis"
+    },
+    "android": {
+        "patterns_file": "patterns/android.txt",
+        "prompt_file": "prompts/android.txt",
+        "description": "Native Android builds analysis"
+    },
+    "ios": {
+        "patterns_file": "patterns/ios.txt",
+        "prompt_file": "prompts/ios.txt",
+        "description": "Native iOS builds analysis"
+    },
+    "flutter": {
+        "patterns_file": "patterns/flutter.txt",
+        "prompt_file": "prompts/flutter.txt",
+        "description": "Flutter cross-platform builds analysis"
     }
 }
 

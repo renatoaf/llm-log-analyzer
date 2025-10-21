@@ -1,0 +1,31 @@
+# Android-specific error patterns
+# One pattern per line, lines starting with # are comments
+
+Gradle build failed
+BUILD FAILED
+FAILURE: Build failed with an exception
+Task :app:
+:app:compile
+error: package
+does not exist
+cannot find symbol
+Execution failed for task
+AAPT: error:
+AndroidManifest.xml:
+Unresolved reference:
+Duplicate class
+R8: ERROR
+ProGuard: ERROR
+dex:
+multidex
+signing failed
+keystore
+ADB:
+could not install
+Installation failed
+License for package
+SDK location not found
+NDK not found
+Gradle sync failed
+Could not resolve dependency
+

@@ -1,0 +1,28 @@
+# iOS-specific error patterns
+# One pattern per line, lines starting with # are comments
+
+xcodebuild: error:
+Command PhaseScriptExecution failed
+Build input file cannot be found
+Undefined symbols for architecture
+Linker command failed
+error: Signing for
+No profile for team
+Provisioning profile
+Code signing is required
+The following build commands failed:
+CompileSwift
+CompileC
+error: Build input file
+ld: framework not found
+ld: library not found
+Module compiled with Swift
+Incompatible module
+duplicate symbol
+Cycle in dependencies
+clang: error:
+Swift Compiler Error
+swiftc failed with exit code
+Info.plist
+Bundle identifier
+

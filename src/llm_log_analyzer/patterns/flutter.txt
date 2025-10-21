@@ -1,0 +1,37 @@
+# Flutter-specific error patterns
+# One pattern per line, lines starting with # are comments
+
+Error:
+FAILURE: Build failed
+BUILD FAILED
+Gradle build failed
+xcodebuild: error:
+Dart Error:
+Compiler message:
+Target kernel_snapshot failed:
+Failed to snapshot
+build_runner
+[!] Error
+pub get failed
+pub upgrade failed
+Could not resolve dependencies
+version solving failed
+CocoaPods not installed
+pod install failed
+The Flutter SDK is not available
+Unable to locate Android SDK
+Unable to find bundled Java version
+Compilation failed
+Expected to find
+does not exist
+cannot find symbol
+Unresolved reference:
+The Gradle failure may have been because of AndroidX
+Finished with error:
+Exception:
+SocketException:
+ProcessException:
+FormatException:
+flutter packages get failed
+Asset not found
+
