@@ -645,6 +645,40 @@ class LogAnalyzer:
         return json_path, markdown_path
 
 
+def format_analysis_summary(result: AnalysisResult, provider_info: dict, markdown_path: str) -> str:
+    """Format analysis results into a human-readable summary string."""
+    confidence_emoji = get_confidence_emoji(result.confidence)
+    
+    summary_parts = []
+    summary_parts.append("=" * 60)
+    summary_parts.append("LLM LOG ANALYSIS COMPLETE")
+    summary_parts.append("=" * 60)
+    summary_parts.append(f"Root Cause: {result.root_cause}")
+    summary_parts.append(f"Confidence: {confidence_emoji} {result.confidence:.1%}")
+    summary_parts.append(f"Provider: {provider_info['provider']}")
+    
+    if result.relevant_lines:
+        summary_parts.append("\nKey Log Lines:")
+        for line in result.relevant_lines:
+            summary_parts.append(f"  > {line}")
+    
+    summary_parts.append("\n" + result.human_summary)
+    summary_parts.append(f"\n💡 For resolution tips and detailed analysis, see: {markdown_path}")
+    
+    return "\n".join(summary_parts)
+
+def save_analysis_summary(summary: str, summary_file_path: Path, logger: Optional[logging.Logger] = None) -> None:
+    """Save the analysis summary to a file."""
+    if logger is None:
+        logger = logging.getLogger(__name__)
+    
+    try:
+        with open(summary_file_path, 'w', encoding='utf-8') as f:
+            f.write(summary)
+        logger.debug(f"Analysis summary saved to: {summary_file_path}")
+    except Exception as e:
+        logger.error(f"Failed to save analysis summary to {summary_file_path}: {e}")
+
 def main():
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(
@@ -758,6 +792,11 @@ Examples:
     )
     
     parser.add_argument(
+        '--summary-file',
+        help='Save analysis summary to specified file (optional, e.g., analysis_summary.txt)'
+    )
+    
+    parser.add_argument(
         '-k', '--api-key',
         help='API key for the selected provider (or use environment variables: OPENAI_API_KEY, GOOGLE_API_KEY, ANTHROPIC_API_KEY, AWS_BEARER_TOKEN_BEDROCK)'
     )
@@ -860,22 +899,14 @@ Examples:
         
         provider_info = analyzer.llm_client.get_provider_info()
         
-        confidence_emoji = get_confidence_emoji(result.confidence)
+        summary_text = format_analysis_summary(result, provider_info, markdown_path)
         
-        print("\n" + "="*60)
-        print("LLM LOG ANALYSIS COMPLETE")
-        print("="*60)
-        print(f"Root Cause: {result.root_cause}")
-        print(f"Confidence: {confidence_emoji} {result.confidence:.1%}")
-        print(f"Provider: {provider_info['provider']}")
+        if args.summary_file:
+            # Respect output directory for summary file path
+            summary_file_path = Path(args.output_dir) / args.summary_file if not Path(args.summary_file).is_absolute() else Path(args.summary_file)
+            save_analysis_summary(summary_text, summary_file_path, analyzer.logger)
         
-        if result.relevant_lines:
-            print(f"\nKey Log Lines:")
-            for line in result.relevant_lines:
-                print(f"  > {line}")
-        
-        print("\n" + result.human_summary)
-        print(f"\n💡 For resolution tips and detailed analysis, see: {markdown_path}")
+        print(summary_text)
         
         # Exit with appropriate code for CI
         if has_failures:
