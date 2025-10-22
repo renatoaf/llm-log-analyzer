@@ -295,7 +295,7 @@ class OutputGenerator:
 class LogAnalyzer:
     """Main analyzer class that orchestrates the entire analysis process."""
     
-    def __init__(self, provider: Optional[str] = None, api_key: Optional[str] = None, output_dir: str = DEFAULT_OUTPUT_DIR, verbose: bool = False, debug: bool = False, max_chunks: int = DEFAULT_MAX_CHUNKS, max_workers: int = DEFAULT_MAX_PARALLEL_CHUNKS, context_lines: int = DEFAULT_CONTEXT_LINES, chunk_size: int = DEFAULT_CHUNK_SIZE, filter_keywords: List[str] = DEFAULT_FILTER_KEYWORDS, preset: Optional[str] = None, patterns_file: str = None, prompt: Optional[str] = None, prompt_file: Optional[str] = None, additional_context_file: str = None, chunk_model: Optional[str] = None, aggregation_model: Optional[str] = None, timeout: Optional[float] = None):
+    def __init__(self, provider: Optional[str] = None, api_key: Optional[str] = None, output_dir: str = DEFAULT_OUTPUT_DIR, verbose: bool = False, quiet: bool = False, debug: bool = False, max_chunks: int = DEFAULT_MAX_CHUNKS, max_workers: int = DEFAULT_MAX_PARALLEL_CHUNKS, context_lines: int = DEFAULT_CONTEXT_LINES, chunk_size: int = DEFAULT_CHUNK_SIZE, filter_keywords: List[str] = DEFAULT_FILTER_KEYWORDS, preset: Optional[str] = None, patterns_file: str = None, prompt: Optional[str] = None, prompt_file: Optional[str] = None, additional_context_file: str = None, chunk_model: Optional[str] = None, aggregation_model: Optional[str] = None, timeout: Optional[float] = None):
         """
             Initialize the log analyzer.
             
@@ -304,6 +304,7 @@ class LogAnalyzer:
                 api_key: API key for the selected provider
                 output_dir: Directory for output files
                 verbose: Enable verbose logging
+                quiet: Suppress info logs (only show warnings and errors)
                 debug: Enable debug files
                 max_chunks: Maximum number of chunks to analyze
                 max_workers: Maximum parallel workers for chunk analysis
@@ -319,13 +320,21 @@ class LogAnalyzer:
                 aggregation_model: Model to use for aggregation analysis (if not provided, uses provider default)
                 timeout: Timeout in seconds for API requests (None means no timeout)
         """
-        log_level = logging.DEBUG if verbose else logging.INFO
+        # Determine log level: verbose > quiet > default
+        if verbose:
+            log_level = logging.DEBUG
+        elif quiet:
+            log_level = logging.WARNING
+        else:
+            log_level = logging.INFO
+        
         logging.basicConfig(
             level=log_level,
             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             datefmt='%H:%M:%S'
         )
         self.logger = logging.getLogger(__name__)
+        self.quiet = quiet
         self.debug_output_dir = Path(output_dir) if debug else None
         
         try:
@@ -840,6 +849,12 @@ Examples:
     )
     
     parser.add_argument(
+        '-q', '--quiet',
+        action='store_true',
+        help='Suppress info logs (only show warnings and errors)'
+    )
+    
+    parser.add_argument(
         '-d', '--debug', 
         action='store_true',
         help='Enable debug files'
@@ -874,6 +889,7 @@ Examples:
             api_key=args.api_key,
             output_dir=args.output_dir,
             verbose=args.verbose,
+            quiet=args.quiet,
             debug=args.debug,
             max_chunks=args.max_chunks,
             max_workers=args.max_workers,
@@ -903,10 +919,12 @@ Examples:
             summary_file_path = Path(args.output_dir) / args.summary_file if not Path(args.summary_file).is_absolute() else Path(args.summary_file)
             save_analysis_summary(summary_text, summary_file_path, analyzer.logger)
         
-        print("=" * 60)
-        print("LLM LOG ANALYSIS COMPLETE")
-        print("=" * 60)
-        print(summary_text)
+        # Only print summary if not in quiet mode
+        if not args.quiet:
+            print("=" * 60)
+            print("LLM LOG ANALYSIS COMPLETE")
+            print("=" * 60)
+            print(summary_text)
         
         # Exit with appropriate code for CI
         if has_failures:
