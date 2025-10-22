@@ -650,9 +650,6 @@ def format_analysis_summary(result: AnalysisResult, provider_info: dict, markdow
     confidence_emoji = get_confidence_emoji(result.confidence)
     
     summary_parts = []
-    summary_parts.append("=" * 60)
-    summary_parts.append("LLM LOG ANALYSIS COMPLETE")
-    summary_parts.append("=" * 60)
     summary_parts.append(f"Root Cause: {result.root_cause}")
     summary_parts.append(f"Confidence: {confidence_emoji} {result.confidence:.1%}")
     summary_parts.append(f"Provider: {provider_info['provider']}")
@@ -906,6 +903,9 @@ Examples:
             summary_file_path = Path(args.output_dir) / args.summary_file if not Path(args.summary_file).is_absolute() else Path(args.summary_file)
             save_analysis_summary(summary_text, summary_file_path, analyzer.logger)
         
+        print("=" * 60)
+        print("LLM LOG ANALYSIS COMPLETE")
+        print("=" * 60)
         print(summary_text)
         
         # Exit with appropriate code for CI
