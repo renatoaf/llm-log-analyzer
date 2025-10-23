@@ -129,6 +129,9 @@ The analyzer now supports **presets** that combine pattern and prompt files for 
 |--------|-------------|-------------|-------------|
 | `generic` | General purpose analysis for any application logs | `patterns/generic.txt` | `prompts/generic.txt` |
 | `unity` | Unity game engine build logs with game-specific patterns | `patterns/unity.txt` | `prompts/unity.txt` |
+| `android` | Native Android builds analysis | `patterns/android.txt` | `prompts/android.txt` |
+| `ios` | Native iOS builds analysis | `patterns/ios.txt` | `prompts/ios.txt` |
+| `flutter` | Flutter cross-platform builds analysis | `patterns/flutter.txt` | `prompts/flutter.txt` |
 
 #### Using Presets
 
@@ -136,6 +139,9 @@ The analyzer now supports **presets** that combine pattern and prompt files for 
 # Use preset (recommended approach)
 llm-log-analyzer build.log -P unity
 llm-log-analyzer server.log -P generic
+llm-log-analyzer gradle-build.log -P android
+llm-log-analyzer xcode-build.log -P ios
+llm-log-analyzer flutter-build.log -P flutter
 
 # Override individual files while using a preset
 llm-log-analyzer build.log -P unity --prompt "Focus on memory leaks in Unity builds"
