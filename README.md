@@ -183,7 +183,7 @@ The Unity build failed due to a script compilation error. The error message indi
 **Provider:** GeminiProvider
 
 **Models Used:** 
-- Chunk Analysis: gemini-1.5-flash
+- Chunk Analysis: gemini-2.5-flash
 - Final Aggregation: gemini-2.5-pro
 
 **Processing Settings:**
@@ -233,13 +233,13 @@ The analyzer supports multiple LLM providers to fit different needs and budgets:
 
 ### Gemini (Google)
 - **Cost**: Free tier with generous limits
-- **Speed**: Very fast (especially Gemini 1.5 Flash)
+- **Speed**: Very fast (especially Gemini 2.5 Flash)
 - **Accuracy**: Good for most log analysis tasks
 - **Setup**: Get API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
 
 **Best for**: CI environments, frequent analysis
 
-Gemini works exceptionally well for Unity builds use case, even with the deprecated Gemini 1.5 models. Given its strong performance and competitive pricing (as of September 2025), it is currently the recommended option for running this analyzer in CI environments.
+Gemini works exceptionally well for Unity builds use case. Given its strong performance and competitive pricing, it is currently the recommended option for running this analyzer in CI environments.
 
 ## CI Integration
 
@@ -465,7 +465,7 @@ Each provider uses optimized models for different tasks:
 - Final aggregation: `gpt-4o-mini`
 
 **Gemini:**
-- Chunk analysis: `gemini-1.5-flash-latest`
+- Chunk analysis: `gemini-2.5-flash`
 - Final aggregation: `gemini-2.5-pro`
 
 **Claude:** (directly via Anthropic API or AWS Bedrock)

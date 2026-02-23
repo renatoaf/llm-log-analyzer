@@ -25,7 +25,7 @@ class GeminiProvider(LLMProvider):
             )
 
     def get_default_chunk_model(self) -> str:
-        return "gemini-2.0-flash-lite"
+        return "gemini-2.5-flash"
 
     def get_default_aggregation_model(self) -> str:
         return "gemini-2.5-pro"
