@@ -295,7 +295,7 @@ class OutputGenerator:
 class LogAnalyzer:
     """Main analyzer class that orchestrates the entire analysis process."""
     
-    def __init__(self, provider: Optional[str] = None, api_key: Optional[str] = None, output_dir: str = DEFAULT_OUTPUT_DIR, verbose: bool = False, quiet: bool = False, debug: bool = False, max_chunks: int = DEFAULT_MAX_CHUNKS, max_workers: int = DEFAULT_MAX_PARALLEL_CHUNKS, context_lines: int = DEFAULT_CONTEXT_LINES, chunk_size: int = DEFAULT_CHUNK_SIZE, filter_keywords: List[str] = DEFAULT_FILTER_KEYWORDS, preset: Optional[str] = None, patterns_file: str = None, prompt: Optional[str] = None, prompt_file: Optional[str] = None, additional_context_file: str = None, chunk_model: Optional[str] = None, aggregation_model: Optional[str] = None, timeout: Optional[float] = None):
+    def __init__(self, provider: Optional[str] = None, api_key: Optional[str] = None, output_dir: str = DEFAULT_OUTPUT_DIR, verbose: bool = False, quiet: bool = False, debug: bool = False, max_chunks: int = DEFAULT_MAX_CHUNKS, max_workers: int = DEFAULT_MAX_PARALLEL_CHUNKS, context_lines: int = DEFAULT_CONTEXT_LINES, chunk_size: int = DEFAULT_CHUNK_SIZE, filter_keywords: List[str] = DEFAULT_FILTER_KEYWORDS, filter_regex: Optional[str] = None, preset: Optional[str] = None, patterns_file: str = None, prompt: Optional[str] = None, prompt_file: Optional[str] = None, additional_context_file: str = None, chunk_model: Optional[str] = None, aggregation_model: Optional[str] = None, timeout: Optional[float] = None):
         """
             Initialize the log analyzer.
             
@@ -311,6 +311,7 @@ class LogAnalyzer:
                 context_lines: Number of lines to include before and after each relevant line
                 chunk_size: Size of chunks in bytes for large log processing
                 filter_keywords: List of keywords to filter log lines
+                filter_regex: Custom regex pattern to filter log lines (combined with filter_keywords via OR)
                 preset: Preset configuration - takes precedence over patterns_file/prompt_file
                 patterns_file: Path to file containing specific patterns to look for
                 prompt: Raw prompt intro text (takes precedence over prompt_file and preset)
@@ -348,7 +349,7 @@ class LogAnalyzer:
         # Resolve preset, patterns, and prompts with proper precedence
         resolved_patterns_file, resolved_prompt_file = self._resolve_preset_and_files(preset, patterns_file, prompt_file)
         filter_patterns = self._resolve_patterns(resolved_patterns_file)
-        filter_keywords_regex = self._build_keywords_regex(filter_keywords)
+        filter_keywords_regex = self._build_keywords_regex(filter_keywords, filter_regex)
 
         self.log_processor = LogProcessor(logger=self.logger, filter_patterns=filter_patterns, filter_keywords_regex=filter_keywords_regex, tokenizer_encoding_name=self.llm_provider.get_default_tokenizer_encoding_name() or DEFAULT_TOKENIZER)
         self.output_generator = OutputGenerator(output_dir=output_dir, logger=self.logger)
@@ -363,7 +364,7 @@ class LogAnalyzer:
         self.logger.info(f"Log Analyzer initialized (max_chunks: {max_chunks}, max_workers: {max_workers}, context_lines: {context_lines}, chunk_size: {chunk_size} tokens)")
     
         self.logger.debug(f"Using tokenizer: {self.log_processor.tokenizer_encoding_name}, patterns: {resolved_patterns_file}, prompt: {self.prompt[:50]}...")
-        self.logger.debug(f"Configured {len(filter_keywords)} filter keywords and {len(filter_patterns)} filter patterns for log processor")
+        self.logger.debug(f"Configured {len(filter_keywords)} filter keywords, filter_regex={filter_regex!r}, and {len(filter_patterns)} filter patterns for log processor")
 
     def _resolve_preset_and_files(self, preset: Optional[str], patterns_file: Optional[str], prompt_file: Optional[str]) -> Tuple[str, str]:
         """
@@ -420,12 +421,21 @@ class LogAnalyzer:
         
         return []
     
-    def _build_keywords_regex(self, keywords):
-        """Build regex pattern for keywords, ensuring they only contain alphanumeric characters."""
+    def _build_keywords_regex(self, keywords, filter_regex: Optional[str] = None):
+        """Build combined regex from keyword list and optional raw regex pattern."""
+        parts = []
+        
         clean_keywords = [k for k in keywords if k and k.strip()]
-        if not clean_keywords:
+        if clean_keywords:
+            parts.append(r'\b(' + '|'.join(clean_keywords) + r')\b')
+        
+        if filter_regex:
+            re.compile(filter_regex)
+            parts.append(filter_regex)
+        
+        if not parts:
             return None
-        return re.compile(r'\b(' + '|'.join(clean_keywords) + r')\b', re.IGNORECASE)
+        return re.compile('|'.join(parts), re.IGNORECASE)
 
     def _load_additional_context(self, additional_context_file: str) -> str:
         """Load additional context from file if provided."""
@@ -821,6 +831,12 @@ Examples:
     )
     
     parser.add_argument(
+        '--filter-regex',
+        default=None,
+        help='Custom regex pattern to filter relevant log lines (combined with --filter-keywords via OR logic)'
+    )
+    
+    parser.add_argument(
         '--additional-context-file',
         default='',
         help='Path to file containing additional context for the analysis (e.g., known issues, solutions, project-specific information)'
@@ -896,6 +912,7 @@ Examples:
             context_lines=args.context_lines,
             chunk_size=args.chunk_size,
             filter_keywords=args.filter_keywords,
+            filter_regex=args.filter_regex,
             preset=args.preset,
             patterns_file=args.patterns_file,
             prompt=args.prompt,
