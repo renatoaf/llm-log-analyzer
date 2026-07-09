@@ -66,10 +66,10 @@ class BedrockClaudeProvider(BedrockProvider):
     """AWS Bedrock Claude LLM provider implementation."""
     
     def get_default_chunk_model(self) -> str:
-        return "anthropic.claude-3-5-haiku-20241022-v1:0"
-    
+        return "anthropic.claude-haiku-4-5-20251001-v1:0"
+
     def get_default_aggregation_model(self) -> str:
-        return "anthropic.claude-3-5-sonnet-20240620-v1:0"
+        return "anthropic.claude-sonnet-4-5-20250929-v1:0"
     
     def get_default_tokenizer_encoding_name(self) -> str:
         return "cl100k_base"

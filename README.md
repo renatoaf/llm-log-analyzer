@@ -183,8 +183,8 @@ The Unity build failed due to a script compilation error. The error message indi
 **Provider:** GeminiProvider
 
 **Models Used:** 
-- Chunk Analysis: gemini-2.5-flash
-- Final Aggregation: gemini-2.5-pro
+- Chunk Analysis: gemini-flash-latest
+- Final Aggregation: gemini-pro-latest
 
 **Processing Settings:**
 - Max Chunks: 20
@@ -461,16 +461,20 @@ llm-log-analyzer build.log --additional-context-file team-knowledge.txt --verbos
 Each provider uses optimized models for different tasks:
 
 **OpenAI:**
-- Chunk analysis: `gpt-4o-mini`
-- Final aggregation: `gpt-4o-mini`
+- Chunk analysis: `gpt-5-mini`
+- Final aggregation: `gpt-5-mini`
 
-**Gemini:**
-- Chunk analysis: `gemini-2.5-flash`
-- Final aggregation: `gemini-2.5-pro`
+**Gemini:** (floating aliases — always track the latest GA models)
+- Chunk analysis: `gemini-flash-latest`
+- Final aggregation: `gemini-pro-latest`
 
-**Claude:** (directly via Anthropic API or AWS Bedrock)
-- Chunk analysis: `claude-3-5-haiku-20241022`
-- Final aggregation: `claude-3-5-sonnet-20241022`
+**Claude:** (directly via Anthropic API)
+- Chunk analysis: `claude-haiku-4-5`
+- Final aggregation: `claude-sonnet-5`
+
+**Claude via AWS Bedrock:**
+- Chunk analysis: `anthropic.claude-haiku-4-5-20251001-v1:0`
+- Final aggregation: `anthropic.claude-sonnet-4-5-20250929-v1:0`
 
 You can customize these by using the parameters `--aggregation-model` and `--chunk-model`.
 

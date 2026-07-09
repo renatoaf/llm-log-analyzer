@@ -25,10 +25,12 @@ class GeminiProvider(LLMProvider):
             )
 
     def get_default_chunk_model(self) -> str:
-        return "gemini-2.5-flash"
+        # Floating alias -> current Flash tier. Pinned Gemini IDs (e.g. gemini-2.5-*)
+        # get retired and start returning 404; the alias tracks the latest GA model.
+        return "gemini-flash-latest"
 
     def get_default_aggregation_model(self) -> str:
-        return "gemini-2.5-pro"
+        return "gemini-pro-latest"
 
     def get_default_tokenizer_encoding_name(self) -> str:
         return "cl100k_base"
