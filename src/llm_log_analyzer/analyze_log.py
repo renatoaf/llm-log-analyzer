@@ -727,7 +727,7 @@ Examples:
   llm-log-analyzer build.log -P generic --provider gemini --debug
   llm-log-analyzer build.log -P unity --provider claude --debug
   llm-log-analyzer system.log -P generic --max-chunks 5 --verbose
-  llm-log-analyzer build.log -P unity --chunk-model gpt-4o --aggregation-model gpt-4o-mini --provider openai
+  llm-log-analyzer build.log -P unity --chunk-model gpt-5-mini --aggregation-model gpt-5 --provider openai
   llm-log-analyzer server.log -P generic --timeout 60 --provider gemini
         """
     )

@@ -22,10 +22,10 @@ class OpenAIProvider(LLMProvider):
             raise ImportError("openai package is required for OpenAI provider. Install requirements with: pip install -r requirements.txt")
     
     def get_default_chunk_model(self) -> str:
-        return "gpt-4o-mini"
+        return "gpt-5-mini"
     
     def get_default_aggregation_model(self) -> str:
-        return "gpt-4o-mini"
+        return "gpt-5-mini"
     
     def get_default_tokenizer_encoding_name(self) -> str:
         return "cl100k_base"

@@ -22,10 +22,10 @@ class ClaudeProvider(LLMProvider):
             raise ImportError("anthropic package is required for Claude provider. Install requirements with: pip install -r requirements.txt")
     
     def get_default_chunk_model(self) -> str:
-        return "claude-3-5-haiku-20241022"
+        return "claude-haiku-4-5"
     
     def get_default_aggregation_model(self) -> str:
-        return "claude-3-5-sonnet-20241022"
+        return "claude-sonnet-5"
     
     def get_default_tokenizer_encoding_name(self) -> str:
         return "cl100k_base"
